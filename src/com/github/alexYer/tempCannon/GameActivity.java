@@ -1,5 +1,8 @@
 package com.github.alexYer.tempCannon;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
@@ -10,14 +13,21 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.adt.io.in.IInputStreamOpener;
 
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.github.alexYer.tempCannon.core.Core;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -34,14 +44,18 @@ public class GameActivity extends SimpleBaseGameActivity {
 	private BitmapTextureAtlas mOnScreenControlTexture;
 	private ITextureRegion mOnScreenControlBaseTextureRegion;
 	private ITextureRegion mOnScreenControlKnobTextureRegion;
-
     private DigitalOnScreenControl mDigitalOnScreenControl;
+
+    private Core mCore;
 
     private Scene mScene;
 
-    //FIXME: ugly construction
+//FIXME: ugly construction
     private float mCurrentX;
     private float mCurrentY;
+
+    private BitmapTexture mTexture;
+    private TextureRegion mFaceTextureRegion;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -53,6 +67,20 @@ public class GameActivity extends SimpleBaseGameActivity {
     @Override
     public void onCreateResources() {
         initControlResources();
+//FIXME: temporary. Implement more advanced resource manager in future.
+        try {
+            this.mTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+                 @Override
+                 public InputStream open() throws IOException {
+                     return getAssets().open("face_box.png");
+                 }
+             });
+        
+            this.mTexture.load();
+            this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture(this.mTexture);
+        } catch (IOException e) {
+            Log.e("TempCannon", "error");
+        }
     }
 
 	
@@ -60,15 +88,15 @@ public class GameActivity extends SimpleBaseGameActivity {
     public Scene onCreateScene() {
         mScene = new Scene();
         mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+
         initControl();
+        initCore();
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
             @Override
             public void onUpdate(final float secElapsed) {
-                Log.i("TempCannon", Float.toString(mCurrentX));
-                Log.i("TempCannon", Float.toString(mCurrentY));
-                Log.i("TempCannon", "\n");
+                mCore.update(mCurrentX, mCurrentY);
             }
 
             @Override
@@ -116,5 +144,10 @@ public class GameActivity extends SimpleBaseGameActivity {
 		this.mOnScreenControlKnobTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mOnScreenControlTexture,
                 this, "onscreen_control_knob.png", 128, 0);
 		this.mOnScreenControlTexture.load();
+    }
+
+    private void initCore() {
+        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager());
+        mScene.attachChild(mCore.player.getSprite());
     }
 }
