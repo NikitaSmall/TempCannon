@@ -4,6 +4,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -16,6 +17,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -37,6 +39,10 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private Scene mScene;
 
+    //FIXME: ugly construction
+    private float mCurrentX;
+    private float mCurrentY;
+
     @Override
     public EngineOptions onCreateEngineOptions() {
         mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -56,7 +62,24 @@ public class GameActivity extends SimpleBaseGameActivity {
         mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
         initControl();
 
+        // Main game circle
+        mScene.registerUpdateHandler(new IUpdateHandler() {
+            @Override
+            public void onUpdate(final float secElapsed) {
+                Log.i("TempCannon", Float.toString(mCurrentX));
+                Log.i("TempCannon", Float.toString(mCurrentY));
+                Log.i("TempCannon", "\n");
+            }
+
+            @Override
+            public void reset() {}
+        });
+
         return mScene;
+    }
+
+    @Override
+    public void onGameCreated() {
     }
 
     @Override
@@ -70,6 +93,8 @@ public class GameActivity extends SimpleBaseGameActivity {
                 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
             @Override
             public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
+                mCurrentX = pValueX;
+                mCurrentY = pValueY;
             }
 
 		});
