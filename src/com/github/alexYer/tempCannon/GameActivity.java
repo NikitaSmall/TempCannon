@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -46,7 +46,7 @@ import com.github.alexYer.tempCannon.core.Core;
  */
 public class GameActivity extends SimpleBaseGameActivity {
     //Camera settings
-    private Camera mCamera;
+    private BoundCamera mCamera;
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
 
@@ -69,7 +69,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
         return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
     }
@@ -108,7 +108,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         loadLevel(mScene);
         mScene.setBackground(new Background(255, 255, 255));
         initControl();
-        initFpsCounter();
+        //initFpsCounter();
         initCore();
 
         // Main game circle
@@ -135,8 +135,8 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void initControl() {
-        Controller controller = new Controller();
-        controller.initController(mControlProperties, this.getVertexBufferObjectManager(), mCamera);
+        Controller controller = new Controller(mFont, mCamera, this.getVertexBufferObjectManager());
+        controller.initController(mControlProperties);
     }
 
     private void initControlResources() {
@@ -215,7 +215,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void initCore() {
-        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager());
+        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera);
         mScene.attachChild(mCore.player.getSprite());
     }
 
@@ -232,25 +232,28 @@ public class GameActivity extends SimpleBaseGameActivity {
         for (TMXLayer layer : map.getTMXLayers()) {
             mScene.attachChild(layer);
         }
+
+        //mCamera.setBounds(0, 0, map.getHeight(), map.getWidth());
+        //mCamera.setBoundsEnabled(true);
     }
 
 //FIXME: delete fps counter
-    private void initFpsCounter() {
-        final FPSCounter fpsCounter = new FPSCounter();
-        this.mEngine.registerUpdateHandler(fpsCounter);
+    //private void initFpsCounter() {
+        //final FPSCounter fpsCounter = new FPSCounter();
+        //this.mEngine.registerUpdateHandler(fpsCounter);
 
-        final Text fpsText = new Text(CAMERA_WIDTH-200, 0, this.mFont, "FPS:", "FPS:XXXXXX".length(),
-                this.getVertexBufferObjectManager());
+        //final Text fpsText = new Text(CAMERA_WIDTH-200, 0, this.mFont, "FPS:", "FPS:XXXXXX".length(),
+                //this.getVertexBufferObjectManager());
 
-        this.mScene.attachChild(fpsText);
+        //this.mScene.attachChild(fpsText);
 
-        this.mScene.registerUpdateHandler(new TimerHandler(1/20.0f, true, new ITimerCallback() {
-            @Override
-            public void onTimePassed(final TimerHandler timeHandler) {
-                fpsText.setText("FPS: " + String.format("%.3g%n", fpsCounter.getFPS()));
-            }
-        }));
-    }
+        //this.mScene.registerUpdateHandler(new TimerHandler(1/20.0f, true, new ITimerCallback() {
+            //@Override
+            //public void onTimePassed(final TimerHandler timeHandler) {
+                //fpsText.setText("FPS: " + String.format("%.3g%n", fpsCounter.getFPS()));
+            //}
+        //}));
+    //}
 
     private void initFont() {
         FontFactory.setAssetBasePath("font/");
