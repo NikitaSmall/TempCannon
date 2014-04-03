@@ -13,7 +13,10 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.tmx.TMXLayer;
+import org.andengine.extension.tmx.TMXLoader;
+import org.andengine.extension.tmx.TMXTiledMap;
+import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -57,6 +60,10 @@ public class GameActivity extends SimpleBaseGameActivity {
     private BitmapTexture mTexture;
     private TextureRegion mFaceTextureRegion;
 
+    private int mSolid;
+
+    private TMXTiledMap map;
+
     @Override
     public EngineOptions onCreateEngineOptions() {
         mCamera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -87,10 +94,13 @@ public class GameActivity extends SimpleBaseGameActivity {
     @Override
     public Scene onCreateScene() {
         mScene = new Scene();
-        mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 
+        loadLevel(mScene);
+        mScene.setBackground(new Background(255, 255, 255));
         initControl();
         initCore();
+
+        Log.i("TempCannon", Integer.toString(mSolid));
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -149,5 +159,20 @@ public class GameActivity extends SimpleBaseGameActivity {
     private void initCore() {
         mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager());
         mScene.attachChild(mCore.player.getSprite());
+    }
+
+    private void loadLevel(Scene scene) {
+        final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
+                this.getVertexBufferObjectManager());
+
+        try {
+            map = tmxLoader.loadFromAsset("level/testLevel.tmx");
+        } catch(TMXLoadException e) {
+            Log.e("TempCannon", e.toString());
+        };
+
+        for (TMXLayer layer : map.getTMXLayers()) {
+            mScene.attachChild(layer);
+        }
     }
 }
