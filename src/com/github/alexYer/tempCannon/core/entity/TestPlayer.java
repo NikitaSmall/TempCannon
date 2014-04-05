@@ -11,6 +11,6 @@ public class TestPlayer extends Player {
     }
 
     private void loadSprite(TextureRegion texture, VertexBufferObjectManager vertexBufferObjectManager) {
-        setSprite(new Sprite(100, 100, texture, vertexBufferObjectManager));
+        setSprite(new Sprite(100, 300, texture, vertexBufferObjectManager));
     }
 }
