@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import android.os.Bundle;
+import com.github.alexYer.tempCannon.camera.CameraController;
+import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
@@ -45,10 +48,13 @@ import com.github.alexYer.tempCannon.core.Core;
  * @author Olexander Yermakov
  */
 public class GameActivity extends SimpleBaseGameActivity {
-    //Camera settings
+    //CameraController settings
     private BoundCamera mCamera;
-    private static final int CAMERA_WIDTH = 720;
-    private static final int CAMERA_HEIGHT = 480;
+    private CameraController cameraController;
+
+    //FIXME: make cooler
+    private int CAMERA_WIDTH;
+    private int CAMERA_HEIGHT;
 
     private Font mFont;
 
@@ -57,6 +63,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Core mCore;
 
     private Scene mScene;
+    private ResourceManager resourceManager;
 
 //FIXME: ugly construction
     private float mCurrentX;
@@ -69,9 +76,13 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        cameraController = new CameraController(getWindowManager().getDefaultDisplay());
+        mCamera = new BoundCamera(0, 0, cameraController.getCameraWidth(), cameraController.getCameraHeight());
 
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
+        CAMERA_HEIGHT = cameraController.getCameraHeight();
+        CAMERA_WIDTH = cameraController.getCameraWidth();
+
+        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(cameraController.getCameraWidth(), cameraController.getCameraHeight()), mCamera);
     }
 
     @Override
@@ -81,6 +92,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public void onCreateResources() {
+        initResourceManager();
         initControlResources();
         initFont();
 
@@ -260,5 +272,15 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(),
                 512, 512, TextureOptions.BILINEAR,  this.getAssets(), "Droid.ttf", 32, true, Color.BLACK);
         this.mFont.load();
+    }
+
+    private void initResourceManager() {
+        Bundle properties = new Bundle();
+        properties.putInt("cameraWidth", cameraController.getCameraWidth());
+        properties.putInt("cameraHeigth", cameraController.getCameraHeight());
+        properties.putFloat("density", cameraController.getDensity());
+        properties.putInt("densityDpi", cameraController.getDensityDpi());
+
+        resourceManager = new ResourceManager(properties);
     }
 }
