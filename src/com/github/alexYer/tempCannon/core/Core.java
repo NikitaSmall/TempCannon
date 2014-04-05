@@ -12,7 +12,7 @@ public class Core {
 
     public Core(TextureRegion playerTexture, VertexBufferObjectManager vertexBufferObjectManager, Camera camera) {
         player = new TestPlayer(playerTexture, vertexBufferObjectManager);
-        //camera.setChaseEntity(player.getSprite());
+        //CameraController.setChaseEntity(player.getSprite());
     }
 
     public void update(float x, float y) {
