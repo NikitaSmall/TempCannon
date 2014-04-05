@@ -6,10 +6,7 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b28af53-a485-4824-815a-65189f3b93ac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/AndEngine.jar" afterPath="$PROJECT_DIR$/libs/AndEngine.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-    </list>
+    <list default="true" id="9b28af53-a485-4824-815a-65189f3b93ac" name="Default" comment="" />
     <ignored path="TempCannon.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -350,15 +347,15 @@
       <changelist id="9b28af53-a485-4824-815a-65189f3b93ac" name="Default" comment="" />
       <created>1396714064433</created>
       <updated>1396714064433</updated>
-      <workItem from="1396714075284" duration="1034000" />
+      <workItem from="1396714075284" duration="1487000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1034000" />
+    <option name="totallyTimeSpent" value="1487000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
