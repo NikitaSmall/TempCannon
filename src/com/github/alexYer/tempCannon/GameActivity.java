@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import android.os.Bundle;
 import com.github.alexYer.tempCannon.camera.CameraController;
+import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
@@ -61,6 +63,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Core mCore;
 
     private Scene mScene;
+    private ResourceManager resourceManager;
 
 //FIXME: ugly construction
     private float mCurrentX;
@@ -89,6 +92,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public void onCreateResources() {
+        initResourceManager();
         initControlResources();
         initFont();
 
@@ -268,5 +272,15 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(),
                 512, 512, TextureOptions.BILINEAR,  this.getAssets(), "Droid.ttf", 32, true, Color.BLACK);
         this.mFont.load();
+    }
+
+    private void initResourceManager() {
+        Bundle properties = new Bundle();
+        properties.putInt("cameraWidth", cameraController.getCameraWidth());
+        properties.putInt("cameraHeigth", cameraController.getCameraHeight());
+        properties.putFloat("density", cameraController.getDensity());
+        properties.putInt("densityDpi", cameraController.getDensityDpi());
+
+        resourceManager = new ResourceManager(properties);
     }
 }
