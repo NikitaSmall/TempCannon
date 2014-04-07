@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.*;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.DisplayMetrics;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
@@ -49,8 +50,26 @@ public class ResourceManager {
         return region;
     }
 
-/*    public TextureRegion loadTexture(String path) {
+    public TextureRegion loadTexture(String path) {
+        String folder = null;
 
-        return ;
-    }*/
+        switch (ResourceConstant.densityDpi) {
+            case DisplayMetrics.DENSITY_LOW:
+                folder = "ldpi/";
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                folder = "mdpi/";
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                folder = "hdpi/";
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                folder = "xhdpi/";
+                break;
+            default:
+                Log.e("TempCannon", "error on choosing dpi, other dpi");
+        }
+
+        return fullPathLoadTexture(folder + path);
+    }
 }
