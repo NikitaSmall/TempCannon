@@ -97,7 +97,8 @@ public class GameActivity extends SimpleBaseGameActivity {
         initFont();
 
 //FIXME: temporary. Implement more advanced resource manager in future.
-        try {
+        this.mFaceTextureRegion = resourceManager.fullPathLoadTexture("face_box.png");
+        /*try {
             this.mTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
                  @Override
                  public InputStream open() throws IOException {
@@ -109,7 +110,7 @@ public class GameActivity extends SimpleBaseGameActivity {
             this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture(this.mTexture);
         } catch (IOException e) {
             Log.e("TempCannon", "error");
-        }
+        }*/
     }
 
 	
@@ -281,6 +282,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putFloat("density", cameraController.getDensity());
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
-        resourceManager = new ResourceManager(properties);
+        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager());
     }
 }
