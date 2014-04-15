@@ -96,20 +96,8 @@ public class GameActivity extends SimpleBaseGameActivity {
         initControlResources();
         initFont();
 
-//FIXME: temporary. Implement more advanced resource manager in future.
-        try {
-            this.mTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("face_box.png");
-                 }
-             });
-        
-            this.mTexture.load();
-            this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture(this.mTexture);
-        } catch (IOException e) {
-            Log.e("TempCannon", "error");
-        }
+//FIXME: temporary. Implement more advanced resource manager in future. FIXED!
+        this.mFaceTextureRegion = resourceManager.loadTexture("face_box.png");
     }
 
 	
@@ -157,33 +145,8 @@ public class GameActivity extends SimpleBaseGameActivity {
         TextureRegion leftButtonTextureRegion = null;
         TextureRegion rightButtonTextureRegion = null;
 
-        try {
-            textureLeft = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("gfx/left.png");
-                 }
-             });
-        
-            textureLeft.load();
-            leftButtonTextureRegion = TextureRegionFactory.extractFromTexture(textureLeft);
-        } catch (IOException e) {
-            Log.e("TempCannon", "Error loading Left Button texture.");
-        }
-
-        try {
-            textureRight = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("gfx/right.png");
-                 }
-             });
-        
-            textureRight.load();
-            rightButtonTextureRegion = TextureRegionFactory.extractFromTexture(textureRight);
-        } catch (IOException e) {
-            Log.e("TempCannon", "Error loading Right Button texture.");
-        }
+        leftButtonTextureRegion = resourceManager.loadTexture("gfx/left.png");
+        rightButtonTextureRegion = resourceManager.loadTexture("gfx/right.png");
 
         float[] coordinatesLeft = {0, CAMERA_HEIGHT - 100};
         float[] coordinatesRight = {100, CAMERA_HEIGHT - 100};
@@ -281,6 +244,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putFloat("density", cameraController.getDensity());
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
-        resourceManager = new ResourceManager(properties);
+        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager());
     }
 }
