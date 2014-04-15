@@ -107,7 +107,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         loadLevel(mScene);
         mScene.setBackground(new Background(255, 255, 255));
         initControl();
-        //initFpsCounter();
         initCore();
 
         // Main game circle
@@ -211,23 +210,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         //mCamera.setBoundsEnabled(true);
     }
 
-//FIXME: delete fps counter
-    //private void initFpsCounter() {
-        //final FPSCounter fpsCounter = new FPSCounter();
-        //this.mEngine.registerUpdateHandler(fpsCounter);
-
-        //final Text fpsText = new Text(CAMERA_WIDTH-200, 0, this.mFont, "FPS:", "FPS:XXXXXX".length(),
-                //this.getVertexBufferObjectManager());
-
-        //this.mScene.attachChild(fpsText);
-
-        //this.mScene.registerUpdateHandler(new TimerHandler(1/20.0f, true, new ITimerCallback() {
-            //@Override
-            //public void onTimePassed(final TimerHandler timeHandler) {
-                //fpsText.setText("FPS: " + String.format("%.3g%n", fpsCounter.getFPS()));
-            //}
-        //}));
-    //}
 
     private void initFont() {
         FontFactory.setAssetBasePath("font/");
