@@ -96,7 +96,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         initControlResources();
         initFont();
 
-//FIXME: temporary. Implement more advanced resource manager in future. FIXED!
         this.mFaceTextureRegion = resourceManager.loadTexture("face_box.png");
     }
 

@@ -45,7 +45,8 @@ public class ResourceManager {
             texture.load();
             region = TextureRegionFactory.extractFromTexture(texture);
         } catch (IOException e) {
-            Log.e("TempCannon", "error on fullPathLoadTexture");
+            Log.e("TempCannon", "Error on loading texture:");
+            Log.e("TempCannon", String.format("   File \"%s\" does not exist.", path));
         }
         return region;
     }
