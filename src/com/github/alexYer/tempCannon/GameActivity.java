@@ -1,25 +1,16 @@
 package com.github.alexYer.tempCannon;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
-import android.os.Bundle;
-import com.github.alexYer.tempCannon.camera.CameraController;
-import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.text.Text;
-import org.andengine.entity.util.FPSCounter;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXTiledMap;
@@ -30,17 +21,18 @@ import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.adt.io.in.IInputStreamOpener;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.github.alexYer.tempCannon.camera.CameraController;
 import com.github.alexYer.tempCannon.controller.ControlProperties;
 import com.github.alexYer.tempCannon.controller.Controller;
 import com.github.alexYer.tempCannon.controller.ITouchCallback;
 import com.github.alexYer.tempCannon.core.Core;
+import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 
 /**
  * (c) 2014 Olexander Yermakov

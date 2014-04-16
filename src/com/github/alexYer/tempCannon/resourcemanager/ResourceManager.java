@@ -67,8 +67,12 @@ public class ResourceManager {
             case DisplayMetrics.DENSITY_XHIGH:
                 folder = "xhdpi/";
                 break;
+            case DisplayMetrics.DENSITY_TV:
+                folder = "tv/";
+                break;
             default:
                 Log.e("TempCannon", "error on choosing dpi, other dpi");
+                Log.e("TempCannon", Integer.toString(ResourceConstant.densityDpi));
         }
 
         return fullPathLoadTexture(folder + path);
