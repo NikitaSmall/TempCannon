@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import android.os.Bundle;
+import com.github.alexYer.tempCannon.camera.CameraController;
+import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.BoundCamera;
@@ -45,10 +48,13 @@ import com.github.alexYer.tempCannon.core.Core;
  * @author Olexander Yermakov
  */
 public class GameActivity extends SimpleBaseGameActivity {
-    //Camera settings
+    //CameraController settings
     private BoundCamera mCamera;
-    private static final int CAMERA_WIDTH = 720;
-    private static final int CAMERA_HEIGHT = 480;
+    private CameraController cameraController;
+
+    //FIXME: make cooler
+    private int CAMERA_WIDTH;
+    private int CAMERA_HEIGHT;
 
     private Font mFont;
 
@@ -57,6 +63,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Core mCore;
 
     private Scene mScene;
+    private ResourceManager resourceManager;
 
 //FIXME: ugly construction
     private float mCurrentX;
@@ -69,9 +76,13 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        cameraController = new CameraController(getWindowManager().getDefaultDisplay());
+        mCamera = new BoundCamera(0, 0, cameraController.getCameraWidth(), cameraController.getCameraHeight());
 
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), mCamera);
+        CAMERA_HEIGHT = cameraController.getCameraHeight();
+        CAMERA_WIDTH = cameraController.getCameraWidth();
+
+        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(cameraController.getCameraWidth(), cameraController.getCameraHeight()), mCamera);
     }
 
     @Override
@@ -81,23 +92,11 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public void onCreateResources() {
+        initResourceManager();
         initControlResources();
         initFont();
 
-//FIXME: temporary. Implement more advanced resource manager in future.
-        try {
-            this.mTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("face_box.png");
-                 }
-             });
-        
-            this.mTexture.load();
-            this.mFaceTextureRegion = TextureRegionFactory.extractFromTexture(this.mTexture);
-        } catch (IOException e) {
-            Log.e("TempCannon", "error");
-        }
+        this.mFaceTextureRegion = resourceManager.loadTexture("face_box.png");
     }
 
 	
@@ -108,7 +107,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         loadLevel(mScene);
         mScene.setBackground(new Background(255, 255, 255));
         initControl();
-        //initFpsCounter();
         initCore();
 
         // Main game circle
@@ -145,33 +143,8 @@ public class GameActivity extends SimpleBaseGameActivity {
         TextureRegion leftButtonTextureRegion = null;
         TextureRegion rightButtonTextureRegion = null;
 
-        try {
-            textureLeft = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("gfx/left.png");
-                 }
-             });
-        
-            textureLeft.load();
-            leftButtonTextureRegion = TextureRegionFactory.extractFromTexture(textureLeft);
-        } catch (IOException e) {
-            Log.e("TempCannon", "Error loading Left Button texture.");
-        }
-
-        try {
-            textureRight = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                 @Override
-                 public InputStream open() throws IOException {
-                     return getAssets().open("gfx/right.png");
-                 }
-             });
-        
-            textureRight.load();
-            rightButtonTextureRegion = TextureRegionFactory.extractFromTexture(textureRight);
-        } catch (IOException e) {
-            Log.e("TempCannon", "Error loading Right Button texture.");
-        }
+        leftButtonTextureRegion = resourceManager.loadTexture("gfx/left.png");
+        rightButtonTextureRegion = resourceManager.loadTexture("gfx/right.png");
 
         float[] coordinatesLeft = {0, CAMERA_HEIGHT - 100};
         float[] coordinatesRight = {100, CAMERA_HEIGHT - 100};
@@ -237,28 +210,21 @@ public class GameActivity extends SimpleBaseGameActivity {
         //mCamera.setBoundsEnabled(true);
     }
 
-//FIXME: delete fps counter
-    //private void initFpsCounter() {
-        //final FPSCounter fpsCounter = new FPSCounter();
-        //this.mEngine.registerUpdateHandler(fpsCounter);
-
-        //final Text fpsText = new Text(CAMERA_WIDTH-200, 0, this.mFont, "FPS:", "FPS:XXXXXX".length(),
-                //this.getVertexBufferObjectManager());
-
-        //this.mScene.attachChild(fpsText);
-
-        //this.mScene.registerUpdateHandler(new TimerHandler(1/20.0f, true, new ITimerCallback() {
-            //@Override
-            //public void onTimePassed(final TimerHandler timeHandler) {
-                //fpsText.setText("FPS: " + String.format("%.3g%n", fpsCounter.getFPS()));
-            //}
-        //}));
-    //}
 
     private void initFont() {
         FontFactory.setAssetBasePath("font/");
         this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(),
                 512, 512, TextureOptions.BILINEAR,  this.getAssets(), "Droid.ttf", 32, true, Color.BLACK);
         this.mFont.load();
+    }
+
+    private void initResourceManager() {
+        Bundle properties = new Bundle();
+        properties.putInt("cameraWidth", cameraController.getCameraWidth());
+        properties.putInt("cameraHeigth", cameraController.getCameraHeight());
+        properties.putFloat("density", cameraController.getDensity());
+        properties.putInt("densityDpi", cameraController.getDensityDpi());
+
+        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager());
     }
 }
