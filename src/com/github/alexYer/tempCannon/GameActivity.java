@@ -185,14 +185,16 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void loadLevel(Scene scene) {
-        final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
-                this.getVertexBufferObjectManager());
+        //final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
+                //this.getVertexBufferObjectManager());
 
-        try {
-            map = tmxLoader.loadFromAsset("level/testLevel.tmx");
-        } catch(TMXLoadException e) {
-            Log.e("TempCannon", e.toString());
-        };
+        //try {
+            //map = tmxLoader.loadFromAsset("level/testLevel2.tmx");
+        //} catch(TMXLoadException e) {
+            //Log.e("TempCannon", e.toString());
+        //};
+        //
+        map = resourceManager.loadLevel("testLevel2");
 
         for (TMXLayer layer : map.getTMXLayers()) {
             mScene.attachChild(layer);
@@ -217,6 +219,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putFloat("density", cameraController.getDensity());
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
-        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager());
+        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager(),
+                this.getVertexBufferObjectManager());
     }
 }
