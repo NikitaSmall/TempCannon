@@ -12,9 +12,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.extension.tmx.TMXLayer;
-import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXTiledMap;
-import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -25,7 +23,6 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.github.alexYer.tempCannon.camera.CameraController;
 import com.github.alexYer.tempCannon.controller.ControlProperties;
@@ -61,7 +58,6 @@ public class GameActivity extends SimpleBaseGameActivity {
     private float mCurrentX;
     private float mCurrentY;
 
-    private BitmapTexture mTexture;
     private TextureRegion mFaceTextureRegion;
 
     private TMXTiledMap map;
@@ -185,23 +181,14 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void loadLevel(Scene scene) {
-        //final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
-                //this.getVertexBufferObjectManager());
-
-        //try {
-            //map = tmxLoader.loadFromAsset("level/testLevel2.tmx");
-        //} catch(TMXLoadException e) {
-            //Log.e("TempCannon", e.toString());
-        //};
-        //
         map = resourceManager.loadLevel("testLevel2");
 
         for (TMXLayer layer : map.getTMXLayers()) {
             mScene.attachChild(layer);
         }
 
-        //mCamera.setBounds(0, 0, map.getHeight(), map.getWidth());
-        //mCamera.setBoundsEnabled(true);
+        mCamera.setBounds(0, 0, map.getTileColumns() * map.getTileHeight(), map.getTileRows() * map.getTileWidth());
+        mCamera.setBoundsEnabled(true);
     }
 
 
