@@ -44,7 +44,7 @@ import com.github.alexYer.tempCannon.core.Core;
 
 /**
  * (c) 2014 Olexander Yermakov
- * 
+ *
  * @author Olexander Yermakov
  */
 public class GameActivity extends SimpleBaseGameActivity {
@@ -65,7 +65,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Scene mScene;
     private ResourceManager resourceManager;
 
-//FIXME: ugly construction
+    //FIXME: ugly construction
     private float mCurrentX;
     private float mCurrentY;
 
@@ -99,7 +99,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mFaceTextureRegion = resourceManager.loadTexture("face_box.png");
     }
 
-	
+
     @Override
     public Scene onCreateScene() {
         mScene = new Scene();
@@ -156,7 +156,7 @@ public class GameActivity extends SimpleBaseGameActivity {
                     mCurrentX = 0;
                 } else {
                     if (te.isActionDown()) {
-                    mCurrentX = -1;
+                        mCurrentX = -1;
                     }
                 }
             }
