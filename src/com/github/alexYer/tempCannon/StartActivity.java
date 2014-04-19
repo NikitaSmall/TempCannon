@@ -61,9 +61,9 @@ public class StartActivity extends Activity implements OnClickListener {
                 break;
         }
     }
-/*
+
     public void onStart() {
         super.onStart();
         //startActivity(new Intent(this, GameActivity.class));
-    }*/
+    }
 }
