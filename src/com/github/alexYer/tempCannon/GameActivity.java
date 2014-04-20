@@ -15,12 +15,10 @@ import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.github.alexYer.tempCannon.camera.CameraController;
@@ -194,10 +192,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
 
     private void initFont() {
-        FontFactory.setAssetBasePath("font/");
-        this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(),
-                512, 512, TextureOptions.BILINEAR,  this.getAssets(), "Droid.ttf", 32, true, Color.BLACK);
-        this.mFont.load();
+        this.mFont = resourceManager.loadFont("Droid.ttf", Color.BLACK);
     }
 
     private void initResourceManager() {
@@ -208,6 +203,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
         resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager(),
-                this.getVertexBufferObjectManager());
+                this.getVertexBufferObjectManager(), this.getFontManager());
     }
 }
