@@ -29,7 +29,9 @@ import com.github.alexYer.tempCannon.controller.ControlProperties;
 import com.github.alexYer.tempCannon.controller.Controller;
 import com.github.alexYer.tempCannon.controller.ITouchCallback;
 import com.github.alexYer.tempCannon.core.Core;
+import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
+import com.github.alexYer.tempCannon.util.Log;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -182,8 +184,9 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private void loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
+        TMXLayer layer = Level.getLayerByName(map, "Map");
 
-        for (TMXLayer layer : map.getTMXLayers()) {
+        if (layer != null) {
             mScene.attachChild(layer);
         }
 
