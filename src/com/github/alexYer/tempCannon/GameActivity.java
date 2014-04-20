@@ -17,7 +17,6 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
@@ -31,7 +30,6 @@ import com.github.alexYer.tempCannon.controller.ITouchCallback;
 import com.github.alexYer.tempCannon.core.Core;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
-import com.github.alexYer.tempCannon.util.Log;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -94,10 +92,10 @@ public class GameActivity extends SimpleBaseGameActivity {
     public Scene onCreateScene() {
         mScene = new Scene();
 
-        loadLevel(mScene);
+        TMXTiledMap map = loadLevel(mScene);
         mScene.setBackground(new Background(255, 255, 255));
         initControl();
-        initCore();
+        initCore(map);
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -128,8 +126,6 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void initControlResources() {
-        BitmapTexture textureRight = null;
-        BitmapTexture textureLeft = null;
         TextureRegion leftButtonTextureRegion = null;
         TextureRegion rightButtonTextureRegion = null;
 
@@ -177,12 +173,12 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mControlProperties.put("right", rButtonProperties);
     }
 
-    private void initCore() {
-        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera);
+    private void initCore(TMXTiledMap map) {
+        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene);
         mScene.attachChild(mCore.player.getSprite());
     }
 
-    private void loadLevel(Scene scene) {
+    private TMXTiledMap loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
         TMXLayer layer = Level.getLayerByName(map, "Map");
 
@@ -192,6 +188,8 @@ public class GameActivity extends SimpleBaseGameActivity {
 
         mCamera.setBounds(0, 0, map.getTileColumns() * map.getTileHeight(), map.getTileRows() * map.getTileWidth());
         mCamera.setBoundsEnabled(true);
+
+        return map;
     }
 
 
