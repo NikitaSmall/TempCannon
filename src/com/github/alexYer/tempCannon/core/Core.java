@@ -33,14 +33,17 @@ public class Core {
         this.map = map;
         this.resourceManager = resourceManager;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
-        player = new TestPlayer(playerTexture, vertexBufferObjectManager);
-        camera.setChaseEntity(player.getSprite());
+        //player = new TestPlayer(playerTexture, vertexBufferObjectManager);
 
         try {
             objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
         } catch(TempCannonTmxException e) {
             Log.e(e.toString());
         }
+
+        createPlayer();
+        camera.setChaseEntity(player.getSprite());
+
     }
 
 
@@ -58,6 +61,13 @@ public class Core {
         try {
             playerObject = Level.getObjectByName(objectGroup, "player");
             player = new TestPlayer(resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
+
+            float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
+            float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
+            Log.i(Integer.toString(playerObject.getX()));
+            Log.i(Float.toString(y));
+
+            player.getSprite().setPosition(x, y);
         } catch(TempCannonTmxException e) {
             Log.e(e.toString());
             return;

@@ -53,4 +53,12 @@ public class Level {
         }
         throw new TempCannonTmxException(String.format("No such object: %s", name));
     }
+
+    public static float levelToSceneCoordinatesX(float x, TMXTiledMap map) {
+        return x;
+    }
+
+    public static float levelToSceneCoordinatesY(float y, TMXTiledMap map) {
+        return y;
+    }
 }
