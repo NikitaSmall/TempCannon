@@ -95,11 +95,11 @@ public class GameActivity extends SimpleBaseGameActivity {
     @Override
     public Scene onCreateScene() {
         mScene = new Scene();
+        mScene.setBackground(new Background(255, 255, 255));
 
         TMXTiledMap map = loadLevel(mScene);
         initControl();
         initCore(map);
-        mScene.setBackground(new Background(255, 255, 255));
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -182,7 +182,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
 
     private void initCore(TMXTiledMap map) {
-        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene);
+        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene, resourceManager);
         mScene.attachChild(mCore.player.getSprite());
     }
 
