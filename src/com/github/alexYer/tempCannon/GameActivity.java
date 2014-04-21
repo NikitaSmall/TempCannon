@@ -29,6 +29,8 @@ import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.core.Core;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
+import com.github.alexYer.tempCannon.util.Log;
+import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -187,11 +189,16 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private TMXTiledMap loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
-        TMXLayer layer = Level.getLayerByName(map, Constants.MAP_LAYER_NAME);
+        try {
+            TMXLayer layer = Level.getLayerByName(map, Constants.MAP_LAYER_NAME);
 
-        if (layer != null) {
-            mScene.attachChild(layer);
+            if (layer != null) {
+                mScene.attachChild(layer);
+            }
+        } catch(TempCannonTmxException e) {
+            Log.e(e.toString());
         }
+
 
         mCamera.setBounds(0, 0, map.getTileColumns() * map.getTileHeight(), map.getTileRows() * map.getTileWidth());
         mCamera.setBoundsEnabled(true);

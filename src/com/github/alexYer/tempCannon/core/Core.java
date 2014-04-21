@@ -10,6 +10,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.github.alexYer.tempCannon.core.entity.TestPlayer;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
+import com.github.alexYer.tempCannon.util.Log;
+import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 /**
  * @author Olexander Yermakov (mannavard1611@gmail.com)
@@ -28,7 +30,11 @@ public class Core {
         player = new TestPlayer(playerTexture, vertexBufferObjectManager);
         camera.setChaseEntity(player.getSprite());
 
-        objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
+        try {
+            objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
+        } catch(TempCannonTmxException e) {
+            Log.e(e.toString());
+        }
     }
 
 
