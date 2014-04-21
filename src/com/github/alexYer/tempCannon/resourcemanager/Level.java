@@ -1,6 +1,7 @@
 package com.github.alexYer.tempCannon.resourcemanager;
 
 import org.andengine.extension.tmx.TMXLayer;
+import org.andengine.extension.tmx.TMXObject;
 import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXTiledMap;
 
@@ -8,7 +9,6 @@ import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 
 /**
- *
  * @author Olexander Yermakov (mannavard1611@gmail.com)
  */
 public class Level {
@@ -25,7 +25,6 @@ public class Level {
         }
         throw new TempCannonTmxException(String.format("No such layer: %s", name));
     }
-
     
     /**
      * @param map   Map from where we want to get GroupObject.
@@ -33,11 +32,25 @@ public class Level {
      * @return      GroupObject.
      */
     public static TMXObjectGroup getObjectGroupByName(TMXTiledMap map, String name) throws TempCannonTmxException {
-        for (TMXObjectGroup obj: map.getTMXObjectGroups()) {
+        for (TMXObjectGroup obj : map.getTMXObjectGroups()) {
             if (obj.getName().equals(name)) {
                 return obj;
             }
         }
-        throw new TempCannonTmxException(String.format("No such group Object: %s", name));
+        throw new TempCannonTmxException(String.format("No such group object: %s", name));
+    }
+
+    /**
+     * @param map   Group from where we want to get Object.
+     * @param name  Object name.
+     * @return      Object.
+     */
+    public static TMXObject getObjectByName(TMXObjectGroup group, String name) throws TempCannonTmxException {
+        for (TMXObject obj : group.getTMXObjects()) {
+            if (obj.getName().equals(name)) {
+                return obj;
+            }
+        }
+        throw new TempCannonTmxException(String.format("No such object: %s", name));
     }
 }
