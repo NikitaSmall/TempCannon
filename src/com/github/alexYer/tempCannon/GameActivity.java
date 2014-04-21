@@ -60,6 +60,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private TMXTiledMap map;
 
+
     @Override
     public EngineOptions onCreateEngineOptions() {
         cameraController = new CameraController(getWindowManager().getDefaultDisplay());
@@ -71,10 +72,12 @@ public class GameActivity extends SimpleBaseGameActivity {
         return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(cameraController.getCameraWidth(), cameraController.getCameraHeight()), mCamera);
     }
 
+
     @Override
     public Engine onCreateEngine(final EngineOptions opts) {
         return new LimitedFPSEngine(opts, 60);
     }
+
 
     @Override
     public void onCreateResources() {
@@ -91,9 +94,9 @@ public class GameActivity extends SimpleBaseGameActivity {
         mScene = new Scene();
 
         TMXTiledMap map = loadLevel(mScene);
-        mScene.setBackground(new Background(255, 255, 255));
         initControl();
         initCore(map);
+        mScene.setBackground(new Background(255, 255, 255));
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -109,19 +112,23 @@ public class GameActivity extends SimpleBaseGameActivity {
         return mScene;
     }
 
+
     @Override
     public void onGameCreated() {
     }
+
 
     @Override
     public void onResumeGame() {
         super.onResumeGame();
     }
 
+
     private void initControl() {
         Controller controller = new Controller(mFont, mCamera, this.getVertexBufferObjectManager());
         controller.initController(mControlProperties);
     }
+
 
     private void initControlResources() {
         TextureRegion leftButtonTextureRegion = null;
@@ -159,7 +166,6 @@ public class GameActivity extends SimpleBaseGameActivity {
             }
         };
 
-
         ControlProperties lButtonProperties = new ControlProperties("Left Button", leftButtonTextureRegion,
                 coordinatesLeft, leftCallback);
         ControlProperties rButtonProperties = new ControlProperties("Right Button", rightButtonTextureRegion,
@@ -171,10 +177,12 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mControlProperties.put("right", rButtonProperties);
     }
 
+
     private void initCore(TMXTiledMap map) {
         mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene);
         mScene.attachChild(mCore.player.getSprite());
     }
+
 
     private TMXTiledMap loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
@@ -194,6 +202,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private void initFont() {
         this.mFont = resourceManager.loadFont("Droid.ttf", Color.BLACK);
     }
+
 
     private void initResourceManager() {
         Bundle properties = new Bundle();

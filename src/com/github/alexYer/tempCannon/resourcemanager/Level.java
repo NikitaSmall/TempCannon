@@ -1,6 +1,7 @@
 package com.github.alexYer.tempCannon.resourcemanager;
 
 import org.andengine.extension.tmx.TMXLayer;
+import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXTiledMap;
 
 
@@ -18,6 +19,21 @@ public class Level {
         for (TMXLayer layer : map.getTMXLayers()) {
             if (layer.getName().equals(name)) {
                 return layer;
+            }
+        }
+        return null;
+    }
+
+    
+    /**
+     * @param map   Map from where we want to get GroupObject.
+     * @param name  GroupObject name.
+     * @return      GroupObject or null.
+     */
+    public static TMXObjectGroup getObjectGroupByName(TMXTiledMap map, String name) {
+        for (TMXObjectGroup obj: map.getTMXObjectGroups()) {
+            if (obj.getName().equals(name)) {
+                return obj;
             }
         }
         return null;

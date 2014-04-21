@@ -17,6 +17,7 @@ public class Core {
     private Scene scene;
     private TMXTiledMap map;
 
+
     public Core(TextureRegion playerTexture, VertexBufferObjectManager vertexBufferObjectManager, Camera camera, 
             TMXTiledMap map, Scene scene) {
         this.scene = scene;
@@ -24,6 +25,7 @@ public class Core {
         player = new TestPlayer(playerTexture, vertexBufferObjectManager);
         camera.setChaseEntity(player.getSprite());
     }
+
 
     public void update(float x, float y) {
         Sprite pSprite = player.getSprite();
