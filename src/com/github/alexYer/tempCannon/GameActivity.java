@@ -25,6 +25,7 @@ import com.github.alexYer.tempCannon.camera.CameraController;
 import com.github.alexYer.tempCannon.controller.ControlProperties;
 import com.github.alexYer.tempCannon.controller.Controller;
 import com.github.alexYer.tempCannon.controller.ITouchCallback;
+import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.core.Core;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
@@ -186,7 +187,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private TMXTiledMap loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
-        TMXLayer layer = Level.getLayerByName(map, "Map");
+        TMXLayer layer = Level.getLayerByName(map, Constants.MAP_LAYER_NAME);
 
         if (layer != null) {
             mScene.attachChild(layer);
