@@ -17,6 +17,6 @@ public class MainActivity extends Activity
     @Override
     public void onStart() {
         super.onStart();
-        startActivity(new Intent(this, GameActivity.class));
+        startActivity(new Intent(this, MenuActivity.class));
     }
 }
