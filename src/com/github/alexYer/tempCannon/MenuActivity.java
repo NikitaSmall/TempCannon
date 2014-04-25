@@ -21,7 +21,7 @@ import android.widget.ImageView;
  */
 
 
-public class StartActivity extends Activity implements OnClickListener {
+public class MenuActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
