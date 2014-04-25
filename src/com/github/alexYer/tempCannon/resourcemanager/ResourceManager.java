@@ -1,18 +1,22 @@
 package com.github.alexYer.tempCannon.resourcemanager;
 
-import android.content.Context;
-import android.content.res.*;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.DisplayMetrics;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.andengine.extension.tmx.TMXLoader;
+import org.andengine.extension.tmx.TMXTiledMap;
+import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 
-import java.io.IOException;
-import java.io.InputStream;
+import android.content.res.AssetManager;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 /**
  * Created by Никита on 05.04.14.
@@ -20,8 +24,11 @@ import java.io.InputStream;
 public class ResourceManager {
     private AssetManager assetManager;
     private TextureManager textureManager;
+    private VertexBufferObjectManager vertexBufferObjectManager;
 
-    public ResourceManager(Bundle properties, AssetManager baseAssetManager, TextureManager baseTextureManager) {
+
+    public ResourceManager(Bundle properties, AssetManager baseAssetManager, TextureManager baseTextureManager, 
+            VertexBufferObjectManager baseVertexBufferObjectManager) {
         ResourceConstant.cameraWidth = properties.getInt("cameraWidth");
         ResourceConstant.cameraHeight = properties.getInt("cameraHeigth");
         ResourceConstant.density = properties.getFloat("density");
@@ -29,7 +36,9 @@ public class ResourceManager {
 
         assetManager = baseAssetManager;
         textureManager = baseTextureManager;
+        vertexBufferObjectManager = baseVertexBufferObjectManager;
     }
+
 
     public TextureRegion fullPathLoadTexture(final String path) {
         BitmapTexture texture = null;
@@ -52,6 +61,11 @@ public class ResourceManager {
     }
 
     public TextureRegion loadTexture(String path) {
+        return fullPathLoadTexture(this.getPathPrefix() + path);
+    }
+
+
+    private String getPathPrefix() {
         String folder = null;
 
         switch (ResourceConstant.densityDpi) {
@@ -75,6 +89,29 @@ public class ResourceManager {
                 Log.e("TempCannon", Integer.toString(ResourceConstant.densityDpi));
         }
 
-        return fullPathLoadTexture(folder + path);
+        return folder;
+    }
+
+
+    /**
+     * Detect screen resolution and load map for that resolutuon from file.
+     *
+     * @param level String "levelname". It'll be transformed in "*dpi/level/levelname.tmx".
+     *                      e.g. "xhdpi/level/1.tmx"
+     * @return              TMXTiledMap with level.
+     */
+    public TMXTiledMap loadLevel(String level) {
+        TMXTiledMap map = null;
+
+        final TMXLoader tmxLoader = new TMXLoader(assetManager, textureManager,
+                vertexBufferObjectManager); 
+
+        try {
+            map = tmxLoader.loadFromAsset(getPathPrefix() + "level/" + level + ".tmx");
+        } catch(TMXLoadException e) {
+            Log.e("TempCannon", e.toString());
+        };
+
+        return map;
     }
 }

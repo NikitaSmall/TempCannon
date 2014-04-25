@@ -15,8 +15,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import com.github.alexYer.tempCannon.MainActivity;
-import com.github.alexYer.tempCannon.R;
+
+/**
+ * Created by Никита on 19.04.14.
+ */
+
 
 public class StartActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,6 @@ public class StartActivity extends Activity implements OnClickListener {
             //переход на сюрфейс
             case R.id.button1: {
                 Intent intent = new Intent();
-                //startActivity(new Intent(this, GameActivity.class));
                 intent.setClass(this, MainActivity.class);
                 startActivity(intent);
             }break;
@@ -60,10 +62,5 @@ public class StartActivity extends Activity implements OnClickListener {
             default:
                 break;
         }
-    }
-
-    public void onStart() {
-        super.onStart();
-        //startActivity(new Intent(this, GameActivity.class));
     }
 }

@@ -36,7 +36,7 @@ import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 
 /**
  * (c) 2014 Olexander Yermakov
- *
+ * 
  * @author Olexander Yermakov
  */
 public class GameActivity extends SimpleBaseGameActivity {
@@ -57,7 +57,7 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Scene mScene;
     private ResourceManager resourceManager;
 
-    //FIXME: ugly construction
+//FIXME: ugly construction
     private float mCurrentX;
     private float mCurrentY;
 
@@ -91,7 +91,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mFaceTextureRegion = resourceManager.loadTexture("face_box.png");
     }
 
-
+	
     @Override
     public Scene onCreateScene() {
         mScene = new Scene();
@@ -148,7 +148,7 @@ public class GameActivity extends SimpleBaseGameActivity {
                     mCurrentX = 0;
                 } else {
                     if (te.isActionDown()) {
-                        mCurrentX = -1;
+                    mCurrentX = -1;
                     }
                 }
             }
@@ -185,14 +185,16 @@ public class GameActivity extends SimpleBaseGameActivity {
     }
 
     private void loadLevel(Scene scene) {
-        final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
-                this.getVertexBufferObjectManager());
+        //final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
+                //this.getVertexBufferObjectManager());
 
-        try {
-            map = tmxLoader.loadFromAsset("level/testLevel.tmx");
-        } catch(TMXLoadException e) {
-            Log.e("TempCannon", e.toString());
-        };
+        //try {
+            //map = tmxLoader.loadFromAsset("level/testLevel2.tmx");
+        //} catch(TMXLoadException e) {
+            //Log.e("TempCannon", e.toString());
+        //};
+        //
+        map = resourceManager.loadLevel("testLevel2");
 
         for (TMXLayer layer : map.getTMXLayers()) {
             mScene.attachChild(layer);
@@ -217,6 +219,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putFloat("density", cameraController.getDensity());
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
-        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager());
+        resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager(),
+                this.getVertexBufferObjectManager());
     }
 }

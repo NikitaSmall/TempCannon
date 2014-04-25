@@ -7,7 +7,7 @@
   <supports-screens android:anyDensity="true" />
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name=".StartActivity" android:configChanges="keyboardHidden|orientation"
+        <activity android:name=".StartActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,18 +15,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
-                  android:label=".MainActivity"
-                  android:parentActivityName="com.github.alexYer.tempCannon.StartActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-
         <activity android:name=".GameActivity"
-                  android:label=".GameActivity"
+                  android:label="GameActivity"
                   android:parentActivityName="com.github.alexYer.tempCannon.MainActivity">
           </activity>
+
+        <activity android:name=".MainActivity"
+                  android:label="MainActivity"
+                  android:parentActivityName="com.github.alexYer.tempCannon.StartActivity">
+        </activity>
     </application>
 </manifest>
