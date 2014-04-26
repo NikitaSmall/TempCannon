@@ -1,5 +1,6 @@
 package com.github.alexYer.tempCannon.core;
 
+import com.github.alexYer.tempCannon.util.exception.TempCannonException;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -68,7 +69,10 @@ public class Core {
             //Log.i(Float.toString(y));
 
             player.getSprite().setPosition(x, y);
-        } catch(TempCannonTmxException e) {
+        } catch (TempCannonTmxException e) {
+            Log.e(e.toString());
+            return;
+        } catch (TempCannonException e) {
             Log.e(e.toString());
             return;
         }
