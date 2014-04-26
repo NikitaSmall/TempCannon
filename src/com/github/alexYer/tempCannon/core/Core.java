@@ -64,8 +64,8 @@ public class Core {
 
             float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
             float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
-            Log.i(Integer.toString(playerObject.getX()));
-            Log.i(Float.toString(y));
+            //Log.i(Integer.toString(playerObject.getX()));
+            //Log.i(Float.toString(y));
 
             player.getSprite().setPosition(x, y);
         } catch(TempCannonTmxException e) {

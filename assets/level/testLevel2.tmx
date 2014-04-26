@@ -2,25 +2,10 @@
 <!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
 <map version="1.0" orientation="orthogonal" width="32" height="20" tilewidth="32" tileheight="32">
  <tileset firstgid="1" source="testLevel2.tsx"/>
- <tileset firstgid="101" name="testLevel2" tilewidth="32" tileheight="32">
-  <image source="testLevel2.png" trans="ff00ff" width="320" height="320"/>
-  <tile id="0">
-   <properties>
-    <property name="solid" value="1"/>
-   </properties>
-  </tile>
-  <tile id="1">
-   <properties>
-    <property name="solid" value="1"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="solid" value="1"/>
-   </properties>
-  </tile>
- </tileset>
  <layer name="Map" width="32" height="20">
+  <properties>
+   <property name="originalTileSize" value="32"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NgGAWjYBSMglEwCkYBuYARiJmQMPPAOmfIA/TwHK7his2P9MQA7knvLgAKAAA=
   </data>
