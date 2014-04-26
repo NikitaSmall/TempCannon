@@ -12,27 +12,25 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.extension.tmx.TMXLayer;
-import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXTiledMap;
-import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.color.Color;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.github.alexYer.tempCannon.camera.CameraController;
 import com.github.alexYer.tempCannon.controller.ControlProperties;
 import com.github.alexYer.tempCannon.controller.Controller;
 import com.github.alexYer.tempCannon.controller.ITouchCallback;
+import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.core.Core;
+import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
+import com.github.alexYer.tempCannon.util.Log;
+import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 /**
  * (c) 2014 Olexander Yermakov
@@ -61,10 +59,10 @@ public class GameActivity extends SimpleBaseGameActivity {
     private float mCurrentX;
     private float mCurrentY;
 
-    private BitmapTexture mTexture;
     private TextureRegion mFaceTextureRegion;
 
     private TMXTiledMap map;
+
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -77,10 +75,12 @@ public class GameActivity extends SimpleBaseGameActivity {
         return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(cameraController.getCameraWidth(), cameraController.getCameraHeight()), mCamera);
     }
 
+
     @Override
     public Engine onCreateEngine(final EngineOptions opts) {
         return new LimitedFPSEngine(opts, 60);
     }
+
 
     @Override
     public void onCreateResources() {
@@ -95,11 +95,11 @@ public class GameActivity extends SimpleBaseGameActivity {
     @Override
     public Scene onCreateScene() {
         mScene = new Scene();
-
-        loadLevel(mScene);
         mScene.setBackground(new Background(255, 255, 255));
+
+        TMXTiledMap map = loadLevel(mScene);
         initControl();
-        initCore();
+        initCore(map);
 
         // Main game circle
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -115,23 +115,25 @@ public class GameActivity extends SimpleBaseGameActivity {
         return mScene;
     }
 
+
     @Override
     public void onGameCreated() {
     }
+
 
     @Override
     public void onResumeGame() {
         super.onResumeGame();
     }
 
+
     private void initControl() {
         Controller controller = new Controller(mFont, mCamera, this.getVertexBufferObjectManager());
         controller.initController(mControlProperties);
     }
 
+
     private void initControlResources() {
-        BitmapTexture textureRight = null;
-        BitmapTexture textureLeft = null;
         TextureRegion leftButtonTextureRegion = null;
         TextureRegion rightButtonTextureRegion = null;
 
@@ -167,7 +169,6 @@ public class GameActivity extends SimpleBaseGameActivity {
             }
         };
 
-
         ControlProperties lButtonProperties = new ControlProperties("Left Button", leftButtonTextureRegion,
                 coordinatesLeft, leftCallback);
         ControlProperties rButtonProperties = new ControlProperties("Right Button", rightButtonTextureRegion,
@@ -179,38 +180,37 @@ public class GameActivity extends SimpleBaseGameActivity {
         this.mControlProperties.put("right", rButtonProperties);
     }
 
-    private void initCore() {
-        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera);
+
+    private void initCore(TMXTiledMap map) {
+        mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene, resourceManager);
         mScene.attachChild(mCore.player.getSprite());
     }
 
-    private void loadLevel(Scene scene) {
-        //final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(),
-                //this.getVertexBufferObjectManager());
 
-        //try {
-            //map = tmxLoader.loadFromAsset("level/testLevel2.tmx");
-        //} catch(TMXLoadException e) {
-            //Log.e("TempCannon", e.toString());
-        //};
-        //
+    private TMXTiledMap loadLevel(Scene scene) {
         map = resourceManager.loadLevel("testLevel2");
+        try {
+            TMXLayer layer = Level.getLayerByName(map, Constants.MAP_LAYER_NAME);
 
-        for (TMXLayer layer : map.getTMXLayers()) {
-            mScene.attachChild(layer);
+            if (layer != null) {
+                mScene.attachChild(layer);
+            }
+        } catch(TempCannonTmxException e) {
+            Log.e(e.toString());
         }
 
-        //mCamera.setBounds(0, 0, map.getHeight(), map.getWidth());
-        //mCamera.setBoundsEnabled(true);
+
+        mCamera.setBounds(0, 0, map.getTileColumns() * map.getTileHeight(), map.getTileRows() * map.getTileWidth());
+        mCamera.setBoundsEnabled(true);
+
+        return map;
     }
 
 
     private void initFont() {
-        FontFactory.setAssetBasePath("font/");
-        this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(),
-                512, 512, TextureOptions.BILINEAR,  this.getAssets(), "Droid.ttf", 32, true, Color.BLACK);
-        this.mFont.load();
+        this.mFont = resourceManager.loadFont("Droid.ttf", Color.BLACK);
     }
+
 
     private void initResourceManager() {
         Bundle properties = new Bundle();
@@ -220,6 +220,6 @@ public class GameActivity extends SimpleBaseGameActivity {
         properties.putInt("densityDpi", cameraController.getDensityDpi());
 
         resourceManager = new ResourceManager(properties, getAssets(), this.getTextureManager(),
-                this.getVertexBufferObjectManager());
+                this.getVertexBufferObjectManager(), this.getFontManager());
     }
 }

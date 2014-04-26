@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="32" height="20" tilewidth="16" tileheight="16">
-    <tileset firstgid="1" source="level/test2.tsx"/>
- <layer name="Tile Layer 1" width="32" height="20">
+<map version="1.0" orientation="orthogonal" width="32" height="20" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="testLevel2.tsx"/>
+ <layer name="Map" width="32" height="20">
+  <properties>
+   <property name="originalTileSize" value="32"/>
+  </properties>
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NgGAWjYBSMglEwCkYBuYARiJmQMPPAOmfIA/TwHK7his2P9MQA7knvLgAKAAA=
   </data>
  </layer>
+ <objectgroup name="Object" width="32" height="20">
+  <object name="platform 2" type="platform" x="192" y="544" width="224" height="32"/>
+  <object name="1 platform" type="platform" x="576" y="448" width="224" height="32">
+   <properties>
+    <property name="solid" value="1"/>
+   </properties>
+  </object>
+  <object name="floor" type="platform" x="0" y="608" width="1056" height="64">
+   <properties>
+    <property name="solid" value="1"/>
+   </properties>
+  </object>
+  <object name="player" type="entity" x="320" y="512" width="32" height="32"/>
+ </objectgroup>
 </map>
