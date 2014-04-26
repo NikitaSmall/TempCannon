@@ -10,6 +10,7 @@ import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import com.github.alexYer.tempCannon.core.entity.AbstractEntity;
 import com.github.alexYer.tempCannon.core.entity.TestPlayer;
 import com.github.alexYer.tempCannon.physics.PhysicsEngine;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
@@ -56,36 +57,21 @@ public class Core {
 
     public void update(HudState hudState) {
         physicsEngine.update(hudState);
+        moveEntities();
+    }
+
+    public void moveEntities() {
+        for (AbstractEntity e : entityList.getEntityList()) {
+            e.move();
+        } 
     }
 
     // FIXME: temporary
     public void createPlayer() {
-        //TMXObject playerObject = null;
-        //try {
-            //playerObject = Level.getObjectByName(objectGroup, "player");
-            //player = new TestPlayer("testPlayer", resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
-
-            //float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
-            //float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
-
-            //player.getSprite().setPosition(x, y);
-        //} catch (TempCannonTmxException e) {
-            //Log.e(e.toString());
-            //return;
-        //} catch (TempCannonException e) {
-            //Log.e(e.toString());
-            //return;
-        //}
         player = (TestPlayer) entityList.getEntityById(Constants.PLAYER);
         if (player != null) {
-            try {
-                float x = Level.levelToSceneCoordinatesX((float) player.getPhysicsObject().getX(), map);
-                float y = Level.levelToSceneCoordinatesX((float) player.getPhysicsObject().getY(), map);
-                player.getSprite().setPosition(x, y);
-                scene.attachChild(player.getSprite());
-            } catch (TempCannonException e) {
-                Log.e(e.toString());
-            }
+            player.move();
+            scene.attachChild(player.getSprite());
         } 
     }
 
@@ -99,7 +85,9 @@ public class Core {
                 entityList.addEntity(new TestPlayer(Constants.PLAYER,
                             obj,
                             resourceManager.loadTexture("face_box.png"),
-                            vertexBufferObjectManager));
+                            vertexBufferObjectManager,
+                            obj.getX(),
+                            obj.getY()));
             }
         }  
     }

@@ -7,8 +7,10 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 
 public class TestPlayer extends Player {
-    public TestPlayer(String id, TMXObject obj,  TextureRegion texture, VertexBufferObjectManager vertexBufferObjectManager) {
-        super(id, obj);
+    public TestPlayer(String id, TMXObject obj, TextureRegion texture,
+            VertexBufferObjectManager vertexBufferObjectManager, 
+            float x, float y) {
+        super(id, obj, x, y);
         loadSprite(texture, vertexBufferObjectManager);
     }
 

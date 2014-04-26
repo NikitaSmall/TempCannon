@@ -28,6 +28,7 @@ import com.github.alexYer.tempCannon.controller.ITouchCallback;
 import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.core.Core;
 import com.github.alexYer.tempCannon.core.HudState;
+import com.github.alexYer.tempCannon.physics.PhysicsConstants;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import com.github.alexYer.tempCannon.util.Log;
@@ -56,10 +57,6 @@ public class GameActivity extends SimpleBaseGameActivity {
     private Scene mScene;
     private ResourceManager resourceManager;
 
-//FIXME: ugly construction
-    private float mCurrentX;
-    private float mCurrentY;
-
     private HudState hudState;
 
     private TextureRegion mFaceTextureRegion;
@@ -80,7 +77,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     @Override
     public Engine onCreateEngine(final EngineOptions opts) {
-        return new LimitedFPSEngine(opts, 60);
+        return new LimitedFPSEngine(opts, PhysicsConstants.FPS);
     }
 
 
@@ -150,11 +147,9 @@ public class GameActivity extends SimpleBaseGameActivity {
             @Override
             public void onTouch(TouchEvent te, float x, float y) {
                 if (te.isActionUp()) {
-                    mCurrentX = 0;
                     hudState.leftButton = false;
                 } else {
                     if (te.isActionDown()) {
-                    mCurrentX = -1;
                     hudState.leftButton = true;
                     }
                 }
@@ -165,11 +160,9 @@ public class GameActivity extends SimpleBaseGameActivity {
             @Override
             public void onTouch(TouchEvent te, float x, float y) {
                 if (te.isActionUp()) {
-                    mCurrentX = 0;
                     hudState.rightButton = false;
                 } else {
                     if (te.isActionDown()) {
-                        mCurrentX = 1;
                         hudState.rightButton = true;
                     }
                 }
