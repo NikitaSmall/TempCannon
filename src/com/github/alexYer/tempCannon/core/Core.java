@@ -1,5 +1,7 @@
 package com.github.alexYer.tempCannon.core;
 
+import java.util.List;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.extension.tmx.TMXObject;
@@ -25,6 +27,7 @@ public class Core {
     private TMXTiledMap map;
     private ResourceManager resourceManager;
     private VertexBufferObjectManager vertexBufferObjectManager;
+    // FIXME: maybe unused
     private TMXObjectGroup objectGroup;
     private PhysicsEngine physicsEngine;
 
@@ -43,11 +46,12 @@ public class Core {
             Log.e(e.toString());
         }
 
+        createEntityList(Constants.ENTITY, objectGroup);
+
         createPlayer();
         camera.setChaseEntity(player.getSprite());
 
     }
-
 
     public void update(HudState hudState) {
         //Sprite pSprite = player.getSprite();
@@ -63,7 +67,7 @@ public class Core {
         TMXObject playerObject = null;
         try {
             playerObject = Level.getObjectByName(objectGroup, "player");
-            player = new TestPlayer(resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
+            player = new TestPlayer("testPlayer", resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
 
             float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
             float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
@@ -76,7 +80,13 @@ public class Core {
             Log.e(e.toString());
             return;
         }
+    }
 
+    private void createEntityList(String type, TMXObjectGroup group) {
+        List<TMXObject> objectList = Level.getObjectsByType(type, group);
 
+        for (TMXObject obj : objectList) {
+            Log.i(obj.getName());
+        }  
     }
 }

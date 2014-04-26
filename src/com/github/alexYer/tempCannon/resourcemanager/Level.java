@@ -1,5 +1,8 @@
 package com.github.alexYer.tempCannon.resourcemanager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLayerProperty;
 import org.andengine.extension.tmx.TMXObject;
@@ -56,6 +59,17 @@ public class Level {
             }
         }
         throw new TempCannonTmxException(String.format("No such object: %s", name));
+    }
+
+    public static List<TMXObject> getObjectsByType(String type, TMXObjectGroup group) {
+        List<TMXObject> objectList = new ArrayList<TMXObject>();
+
+        for (TMXObject obj : group.getTMXObjects()) {
+            if (obj.getType().equals(type)) {
+                objectList.add(obj);
+            }
+        } 
+        return objectList;
     }
 
     public static TMXLayerProperty getTmxLayerProperty(TMXLayer layer, String propertyName) throws TempCannonTmxException {

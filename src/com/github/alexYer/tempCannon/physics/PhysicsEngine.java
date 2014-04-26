@@ -13,6 +13,5 @@ public class PhysicsEngine {
     }
 
     public void update(HudState hudState) {
-        Log.i(Boolean.toString(hudState.leftButton));
     }
 }
