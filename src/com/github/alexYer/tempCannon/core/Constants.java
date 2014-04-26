@@ -8,4 +8,7 @@ public final class Constants {
 
     // TMX object types
     public static final String ENTITY = "entity";
+
+    // TMX object names
+    public static final String PLAYER = "player";
 }

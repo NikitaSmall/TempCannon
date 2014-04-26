@@ -30,6 +30,7 @@ public class Core {
     // FIXME: maybe unused
     private TMXObjectGroup objectGroup;
     private PhysicsEngine physicsEngine;
+    private EntityList entityList;
 
 
     public Core(TextureRegion playerTexture, VertexBufferObjectManager vertexBufferObjectManager, Camera camera, 
@@ -84,9 +85,15 @@ public class Core {
 
     private void createEntityList(String type, TMXObjectGroup group) {
         List<TMXObject> objectList = Level.getObjectsByType(type, group);
+        entityList = new EntityList();
 
+        // TODO: implement for all entity types and fix constants
         for (TMXObject obj : objectList) {
-            Log.i(obj.getName());
+            if (obj.getName().equals(Constants.PLAYER)) {
+                entityList.addEntity(new TestPlayer("testPlayer",
+                            resourceManager.loadTexture("face_box.png"),
+                            vertexBufferObjectManager));
+            }
         }  
     }
 }
