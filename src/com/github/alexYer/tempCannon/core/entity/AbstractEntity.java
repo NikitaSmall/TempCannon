@@ -1,14 +1,17 @@
 package com.github.alexYer.tempCannon.core.entity;
 
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.tmx.TMXObject;
 
 public abstract class AbstractEntity {
     public String id;
     private Sprite sprite;
     private boolean onScene;
+    private TMXObject physicsObject;
 
-    public AbstractEntity(String id) {
+    public AbstractEntity(String id, TMXObject object) {
         this.id = id;
+        this.physicsObject = object;
     }
 
     /**
@@ -37,5 +40,12 @@ public abstract class AbstractEntity {
      */
     public void setOnScene(boolean onScene) {
         this.onScene = onScene;
+    }
+
+    /**
+     * @return the physicsObject
+     */
+    public TMXObject getPhysicsObject() {
+        return physicsObject;
     }
 }

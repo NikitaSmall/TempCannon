@@ -1,13 +1,14 @@
 package com.github.alexYer.tempCannon.core.entity;
 
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.tmx.TMXObject;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 
 public class TestPlayer extends Player {
-    public TestPlayer(String id, TextureRegion texture, VertexBufferObjectManager vertexBufferObjectManager) {
-        super(id);
+    public TestPlayer(String id, TMXObject obj,  TextureRegion texture, VertexBufferObjectManager vertexBufferObjectManager) {
+        super(id, obj);
         loadSprite(texture, vertexBufferObjectManager);
     }
 

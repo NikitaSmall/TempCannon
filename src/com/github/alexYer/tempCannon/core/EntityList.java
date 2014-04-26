@@ -22,6 +22,24 @@ public class EntityList {
         return entityList;
     }
 
+    public AbstractEntity getEntityById(String id) {
+        for (AbstractEntity e : entityList) {
+            if (e.id.equals(id)) {
+                return e;
+            }
+        } 
+        return null;
+    }
+
+    public boolean isEntityExist(String id) {
+        for (AbstractEntity e : entityList) {
+            if (e.id.equals(id)) {
+                return true;
+            }
+        } 
+        return false;
+    }
+
     public List<AbstractEntity> addEntity(AbstractEntity entity)  {
         entityList.add(entity);
         return entityList;

@@ -190,7 +190,6 @@ public class GameActivity extends SimpleBaseGameActivity {
 
     private void initCore(TMXTiledMap map) {
         mCore = new Core(mFaceTextureRegion, getVertexBufferObjectManager(), mCamera, map, mScene, resourceManager);
-        mScene.attachChild(mCore.player.getSprite());
     }
 
 

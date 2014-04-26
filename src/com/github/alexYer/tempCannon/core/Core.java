@@ -39,7 +39,6 @@ public class Core {
         this.map = map;
         this.resourceManager = resourceManager;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
-        this.physicsEngine = new PhysicsEngine(map);
 
         try {
             objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
@@ -48,39 +47,46 @@ public class Core {
         }
 
         createEntityList(Constants.ENTITY, objectGroup);
+        this.physicsEngine = new PhysicsEngine(map, entityList);
 
         createPlayer();
-        camera.setChaseEntity(player.getSprite());
+        //camera.setChaseEntity(player.getSprite());
 
     }
 
     public void update(HudState hudState) {
-        //Sprite pSprite = player.getSprite();
-        //float currentX = pSprite.getX();
-        //float currentY = pSprite.getY();
-
-        //player.getSprite().setPosition(x + currentX, y + currentY);
         physicsEngine.update(hudState);
     }
 
     // FIXME: temporary
     public void createPlayer() {
-        TMXObject playerObject = null;
-        try {
-            playerObject = Level.getObjectByName(objectGroup, "player");
-            player = new TestPlayer("testPlayer", resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
+        //TMXObject playerObject = null;
+        //try {
+            //playerObject = Level.getObjectByName(objectGroup, "player");
+            //player = new TestPlayer("testPlayer", resourceManager.loadTexture("face_box.png"), vertexBufferObjectManager);
 
-            float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
-            float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
+            //float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
+            //float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
 
-            player.getSprite().setPosition(x, y);
-        } catch (TempCannonTmxException e) {
-            Log.e(e.toString());
-            return;
-        } catch (TempCannonException e) {
-            Log.e(e.toString());
-            return;
-        }
+            //player.getSprite().setPosition(x, y);
+        //} catch (TempCannonTmxException e) {
+            //Log.e(e.toString());
+            //return;
+        //} catch (TempCannonException e) {
+            //Log.e(e.toString());
+            //return;
+        //}
+        player = (TestPlayer) entityList.getEntityById(Constants.PLAYER);
+        if (player != null) {
+            try {
+                float x = Level.levelToSceneCoordinatesX((float) player.getPhysicsObject().getX(), map);
+                float y = Level.levelToSceneCoordinatesX((float) player.getPhysicsObject().getY(), map);
+                player.getSprite().setPosition(x, y);
+                scene.attachChild(player.getSprite());
+            } catch (TempCannonException e) {
+                Log.e(e.toString());
+            }
+        } 
     }
 
     private void createEntityList(String type, TMXObjectGroup group) {
@@ -90,7 +96,8 @@ public class Core {
         // TODO: implement for all entity types and fix constants
         for (TMXObject obj : objectList) {
             if (obj.getName().equals(Constants.PLAYER)) {
-                entityList.addEntity(new TestPlayer("testPlayer",
+                entityList.addEntity(new TestPlayer(Constants.PLAYER,
+                            obj,
                             resourceManager.loadTexture("face_box.png"),
                             vertexBufferObjectManager));
             }
