@@ -13,6 +13,7 @@ import com.github.alexYer.tempCannon.core.entity.TestPlayer;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import com.github.alexYer.tempCannon.util.Log;
+import com.github.alexYer.tempCannon.util.exception.TempCannonException;
 import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 /**
@@ -68,7 +69,10 @@ public class Core {
             //Log.i(Float.toString(y));
 
             player.getSprite().setPosition(x, y);
-        } catch(TempCannonTmxException e) {
+        } catch (TempCannonTmxException e) {
+            Log.e(e.toString());
+            return;
+        } catch (TempCannonException e) {
             Log.e(e.toString());
             return;
         }
