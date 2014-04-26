@@ -17,7 +17,7 @@
             android:textColor="#000"/>
 
     <Button
-            android:id="@+id/button1"
+            android:id="@+id/startButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
             android:background="#fff"/>
 
     <Button
-            android:id="@+id/button2"
+            android:id="@+id/exitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
