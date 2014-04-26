@@ -51,7 +51,7 @@ public class Core {
         this.physicsEngine = new PhysicsEngine(map, entityList);
 
         createPlayer();
-        //camera.setChaseEntity(player.getSprite());
+        camera.setChaseEntity(entityList.getEntityById(Constants.PLAYER).getSprite());
 
     }
 

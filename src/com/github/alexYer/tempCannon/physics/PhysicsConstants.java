@@ -8,4 +8,6 @@ public class PhysicsConstants {
 
     public static final float maxPlayerTilePerSecondSpeed = 20;
     public static float maxPlayerSpeed;
+    public static float playerAcceleration;
+    public static float playerDeceleration;
 }

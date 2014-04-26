@@ -10,6 +10,7 @@ public abstract class AbstractEntity {
     private TMXObject physicsObject;
     private float x;
     private float y;
+    private float speed;
 
     public AbstractEntity(String id, TMXObject object, float x, float y) {
         this.id = id;
@@ -79,6 +80,20 @@ public abstract class AbstractEntity {
      */
     public void setY(float y) {
         this.y = y;
+    }
+
+    /**
+     * @return the speed
+     */
+    public float getSpeed() {
+        return speed;
+    }
+
+    /**
+     * @param speed the speed to set
+     */
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
     public void move() {
