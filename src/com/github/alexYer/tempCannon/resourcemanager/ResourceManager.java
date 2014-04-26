@@ -6,12 +6,17 @@ import java.io.InputStream;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
+import org.andengine.util.color.Color;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -25,10 +30,11 @@ public class ResourceManager {
     private AssetManager assetManager;
     private TextureManager textureManager;
     private VertexBufferObjectManager vertexBufferObjectManager;
+    private FontManager fontManager;
 
 
     public ResourceManager(Bundle properties, AssetManager baseAssetManager, TextureManager baseTextureManager, 
-            VertexBufferObjectManager baseVertexBufferObjectManager) {
+            VertexBufferObjectManager baseVertexBufferObjectManager, FontManager baseFontManager) {
         ResourceConstant.cameraWidth = properties.getInt("cameraWidth");
         ResourceConstant.cameraHeight = properties.getInt("cameraHeigth");
         ResourceConstant.density = properties.getFloat("density");
@@ -37,6 +43,7 @@ public class ResourceManager {
         assetManager = baseAssetManager;
         textureManager = baseTextureManager;
         vertexBufferObjectManager = baseVertexBufferObjectManager;
+        fontManager = baseFontManager;
     }
 
 
@@ -113,5 +120,18 @@ public class ResourceManager {
         };
 
         return map;
+    }
+
+    /**
+     * @param path Path to font file from assets/font/ directory.
+     * @return
+     */
+    public Font loadFont(String path, Color color) {
+        FontFactory.setAssetBasePath("font/");
+        Font font = FontFactory.createFromAsset(fontManager, textureManager,
+                512, 512, TextureOptions.BILINEAR,  assetManager, path, 32, true, color.getARGBPackedInt());
+        font.load();
+
+        return font;
     }
 }
