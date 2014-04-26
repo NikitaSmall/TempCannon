@@ -1,9 +1,7 @@
 package com.github.alexYer.tempCannon.core;
 
-import com.github.alexYer.tempCannon.util.exception.TempCannonException;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.tmx.TMXObject;
 import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXTiledMap;
@@ -11,6 +9,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.github.alexYer.tempCannon.core.entity.TestPlayer;
+import com.github.alexYer.tempCannon.physics.PhysicsEngine;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import com.github.alexYer.tempCannon.util.Log;
@@ -27,6 +26,7 @@ public class Core {
     private ResourceManager resourceManager;
     private VertexBufferObjectManager vertexBufferObjectManager;
     private TMXObjectGroup objectGroup;
+    private PhysicsEngine physicsEngine;
 
 
     public Core(TextureRegion playerTexture, VertexBufferObjectManager vertexBufferObjectManager, Camera camera, 
@@ -35,6 +35,7 @@ public class Core {
         this.map = map;
         this.resourceManager = resourceManager;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
+        this.physicsEngine = new PhysicsEngine(map);
 
         try {
             objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
@@ -48,12 +49,13 @@ public class Core {
     }
 
 
-    public void update(float x, float y) {
-        Sprite pSprite = player.getSprite();
-        float currentX = pSprite.getX();
-        float currentY = pSprite.getY();
+    public void update(HudState hudState) {
+        //Sprite pSprite = player.getSprite();
+        //float currentX = pSprite.getX();
+        //float currentY = pSprite.getY();
 
-        player.getSprite().setPosition(x + currentX, y + currentY);
+        //player.getSprite().setPosition(x + currentX, y + currentY);
+        physicsEngine.update(hudState);
     }
 
     // FIXME: temporary

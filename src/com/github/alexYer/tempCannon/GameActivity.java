@@ -27,6 +27,7 @@ import com.github.alexYer.tempCannon.controller.Controller;
 import com.github.alexYer.tempCannon.controller.ITouchCallback;
 import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.core.Core;
+import com.github.alexYer.tempCannon.core.HudState;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import com.github.alexYer.tempCannon.util.Log;
@@ -59,8 +60,9 @@ public class GameActivity extends SimpleBaseGameActivity {
     private float mCurrentX;
     private float mCurrentY;
 
-    private TextureRegion mFaceTextureRegion;
+    private HudState hudState;
 
+    private TextureRegion mFaceTextureRegion;
     private TMXTiledMap map;
 
 
@@ -105,7 +107,7 @@ public class GameActivity extends SimpleBaseGameActivity {
         mScene.registerUpdateHandler(new IUpdateHandler() {
             @Override
             public void onUpdate(final float secElapsed) {
-                mCore.update(mCurrentX, mCurrentY);
+                mCore.update(hudState);
             }
 
             @Override
@@ -134,6 +136,7 @@ public class GameActivity extends SimpleBaseGameActivity {
 
 
     private void initControlResources() {
+        hudState = new HudState();
         TextureRegion leftButtonTextureRegion = null;
         TextureRegion rightButtonTextureRegion = null;
 
@@ -148,9 +151,11 @@ public class GameActivity extends SimpleBaseGameActivity {
             public void onTouch(TouchEvent te, float x, float y) {
                 if (te.isActionUp()) {
                     mCurrentX = 0;
+                    hudState.leftButton = false;
                 } else {
                     if (te.isActionDown()) {
                     mCurrentX = -1;
+                    hudState.leftButton = true;
                     }
                 }
             }
@@ -161,9 +166,11 @@ public class GameActivity extends SimpleBaseGameActivity {
             public void onTouch(TouchEvent te, float x, float y) {
                 if (te.isActionUp()) {
                     mCurrentX = 0;
+                    hudState.rightButton = false;
                 } else {
                     if (te.isActionDown()) {
                         mCurrentX = 1;
+                        hudState.rightButton = true;
                     }
                 }
             }
