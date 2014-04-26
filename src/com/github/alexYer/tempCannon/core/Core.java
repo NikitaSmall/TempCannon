@@ -14,6 +14,7 @@ import com.github.alexYer.tempCannon.core.entity.TestPlayer;
 import com.github.alexYer.tempCannon.resourcemanager.Level;
 import com.github.alexYer.tempCannon.resourcemanager.ResourceManager;
 import com.github.alexYer.tempCannon.util.Log;
+import com.github.alexYer.tempCannon.util.exception.TempCannonException;
 import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
 
 /**
@@ -34,7 +35,6 @@ public class Core {
         this.map = map;
         this.resourceManager = resourceManager;
         this.vertexBufferObjectManager = vertexBufferObjectManager;
-        //player = new TestPlayer(playerTexture, vertexBufferObjectManager);
 
         try {
             objectGroup = Level.getObjectGroupByName(map, Constants.PHYSICAL_OBJECT_GROUP_NAME);
@@ -65,8 +65,6 @@ public class Core {
 
             float x = Level.levelToSceneCoordinatesX((float) playerObject.getX(), map);
             float y = Level.levelToSceneCoordinatesY((float) playerObject.getY(), map);
-            //Log.i(Integer.toString(playerObject.getX()));
-            //Log.i(Float.toString(y));
 
             player.getSprite().setPosition(x, y);
         } catch (TempCannonTmxException e) {
