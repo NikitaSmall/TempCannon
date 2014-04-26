@@ -45,7 +45,7 @@ public class MenuActivity extends Activity implements OnClickListener {
             //выход
             case R.id.exitButton: {
                 finish();
-                System.exit(0);
+                android.os.Process.killProcess(android.os.Process.myPid());
             }break;
 
             default:
