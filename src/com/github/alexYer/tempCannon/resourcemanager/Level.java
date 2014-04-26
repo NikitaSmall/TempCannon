@@ -6,6 +6,7 @@ import org.andengine.extension.tmx.TMXObject;
 import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXTiledMap;
 
+import com.github.alexYer.tempCannon.core.Constants;
 import com.github.alexYer.tempCannon.util.Log;
 import com.github.alexYer.tempCannon.util.exception.TempCannonException;
 import com.github.alexYer.tempCannon.util.exception.TempCannonTmxException;
@@ -68,7 +69,8 @@ public class Level {
 
     public static float levelToSceneCoordinatesX(float x, TMXTiledMap map) throws TempCannonException {
         try {
-            TMXLayerProperty property = getTmxLayerProperty(getLayerByName(map, "Map"), "originalTileSize");
+            TMXLayerProperty property = getTmxLayerProperty(getLayerByName(map, Constants.MAP_LAYER_NAME),
+                    Constants.ORIGINAL_TILE_SIZE);
             return x / Integer.parseInt(property.getValue()) * map.getTileWidth();
         } catch(TempCannonTmxException e) {
             Log.e(e.toString());
@@ -78,7 +80,8 @@ public class Level {
 
     public static float levelToSceneCoordinatesY(float y, TMXTiledMap map) throws TempCannonException {
         try {
-            TMXLayerProperty property = getTmxLayerProperty(getLayerByName(map, "Map"), "originalTileSize");
+            TMXLayerProperty property = getTmxLayerProperty(getLayerByName(map, Constants.MAP_LAYER_NAME),
+                    Constants.ORIGINAL_TILE_SIZE);
             return y / Integer.parseInt(property.getValue()) * map.getTileHeight();
         } catch(TempCannonTmxException e) {
             Log.e(e.toString());
