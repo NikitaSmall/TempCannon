@@ -24,7 +24,6 @@ public class MenuActivity extends Activity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.menumain);
-        //setContentView(new GameView(this,null));
 
         Button startButton = (Button)findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
@@ -35,19 +34,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            //переход на сюрфейс
-            case R.id.startButton: {
+            case R.id.startButton:
                 Intent intent = new Intent();
                 intent.setClass(this, GameActivity.class);
                 startActivity(intent);
-            }break;
-
-            //выход
-            case R.id.exitButton: {
+                break;
+            case R.id.exitButton:
                 finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
-            }break;
-
+                break;
             default:
                 break;
         }
